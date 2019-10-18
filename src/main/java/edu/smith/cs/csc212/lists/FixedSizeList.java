@@ -56,18 +56,21 @@ public class FixedSizeList<T> extends ListADT<T> {
 
 	@Override
 	public T getFront() {
-		throw new TODOErr();
+		//throw new TODOErr();
+		this.checkNotEmpty();
+		return this.array.getIndex(0);
 	}
 
 	@Override
 	public T getBack() {
-		throw new TODOErr();
+		//throw new TODOErr();
+		return this.array.getIndex(fill-1)
 	}
 
 	@Override
 	public void addIndex(int index, T value) {
 		// slide to the right
-		throw new TODOErr();
+		//throw new TODOErr();
 	}
 
 	@Override
