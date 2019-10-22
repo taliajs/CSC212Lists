@@ -56,26 +56,45 @@ public class FixedSizeList<T> extends ListADT<T> {
 
 	@Override
 	public T getFront() {
-		//throw new TODOErr();
 		this.checkNotEmpty();
 		return this.array.getIndex(0);
 	}
 
 	@Override
 	public T getBack() {
-		//throw new TODOErr();
-		return this.array.getIndex(fill-1)
+		this.checkNotEmpty();
+		return this.array.getIndex(fill-1);
 	}
 
 	@Override
 	public void addIndex(int index, T value) {
-		// slide to the right
-		//throw new TODOErr();
+		// is there enough space to add one?
+		//if not, throw ran out of space error
+		//throw new RanOutOfSpaceError();
+		
+		if (fill < array.size()) { 
+			//check if index is valid
+			checkInclusiveIndex(index);
+	
+			//slide over to the right 
+			for (int i = fill; i > index; i--) {
+				this.array.setIndex(i, array.getIndex(i-1));
+			}
+			fill++;
+			
+			//put value at index
+			array.setIndex(index, value);
+			
+		} else {
+			throw new RanOutOfSpaceError();
+		}
+		
 	}
 
 	@Override
 	public void addFront(T value) {
-		this.addIndex(0, value);
+		this.addIndex(0, value); 
+		//problem: adding the last value to the front
 	}
 
 	@Override
@@ -89,13 +108,31 @@ public class FixedSizeList<T> extends ListADT<T> {
 
 	@Override
 	public T removeIndex(int index) {
-		// slide to the left
-		throw new TODOErr();
+		//PPT #8 on Arrays and Fixed Size Lists, slide 30
+		
+		//checking to make sure there is something there
+		checkNotEmpty(); 
+		
+		//get the index we want to delete
+		T removed = this.getIndex(index);
+		fill--; 
+		
+		//slide to the left
+		for (int i = index; i<fill; i++) {
+			this.array.setIndex(i, array.getIndex(i+1));
+		}
+		
+		//get rid of the duplicate
+		this.array.setIndex(fill, null);
+		
+		//return the deleted index
+		return removed;	
 	}
 
 	@Override
 	public T removeBack() {
-		throw new TODOErr();
+		checkNotEmpty(); 
+		return removeIndex(fill-1);
 	}
 
 	@Override
