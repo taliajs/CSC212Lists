@@ -2,6 +2,7 @@ package edu.smith.cs.csc212.lists;
 
 import me.jjfoley.adt.ArrayWrapper;
 import me.jjfoley.adt.ListADT;
+import me.jjfoley.adt.errors.RanOutOfSpaceError;
 import me.jjfoley.adt.errors.TODOErr;
 
 /**
@@ -40,6 +41,7 @@ public class GrowableList<T> extends ListADT<T> {
 	public T removeFront() {
 		this.checkNotEmpty();
 		return removeIndex(0);
+		
 	}
 
 	@Override
@@ -50,13 +52,27 @@ public class GrowableList<T> extends ListADT<T> {
 
 	@Override
 	public T removeIndex(int index) {
-		// slide to the left
-		throw new TODOErr();
+		checkNotEmpty();
+		
+		//get the index we want to remove
+		T removed = this.getIndex(index);
+		fill --;
+		
+		//slide to the left
+		for (int i = index; i<fill; i++) {
+			this.array.setIndex(i, array.getIndex(i + 1));
+		}
+		
+		//get rid of the duplicate
+		this.array.setIndex(fill, null);
+		
+		return removed; //return the deleted index
+		
 	}
 
 	@Override
 	public void addFront(T item) {
-		addIndex(0, item);
+		this.addIndex(0, item);
 	}
 
 	@Override
@@ -71,14 +87,50 @@ public class GrowableList<T> extends ListADT<T> {
 	 * This private method is called when we need to make room in our GrowableList.
 	 */
 	private void resizeArray() {
-		// TODO: use this where necessary (already called in addBack!)
-		throw new TODOErr();
+		//use this where necessary (already called in addBack!)
+		
+		ArrayWrapper<T> newArray = new ArrayWrapper<>(array.size()* 2);
+		
+		for (int i = 0; i < fill; i++) {
+			newArray.setIndex(i, array.getIndex(i));
+		}
+
+		array = newArray; //replace with newArray
+		
 	}
 
 	@Override
 	public void addIndex(int index, T item) {
-		// slide to the right
-		throw new TODOErr();
+		if (fill < array.size()) { 
+			//check if index is valid
+			checkInclusiveIndex(index);
+	
+			//slide over to the right 
+			for (int i = fill; i > index; i--) {
+				this.array.setIndex(i, array.getIndex(i-1));
+			}
+			fill++;
+			
+			//put item at index
+			array.setIndex(index, item);
+			
+		} else {
+			resizeArray();
+			
+			//addIndex
+			//*CHALLENGE: try and move resize array to beginning, 
+			//and only have addIndex loop once
+			checkInclusiveIndex(index);
+			
+			//slide over to the right 
+			for (int i = fill; i > index; i--) {
+				this.array.setIndex(i, array.getIndex(i-1));
+			}
+			fill++;
+			
+			//put item at index
+			array.setIndex(index, item);
+		}
 	}
 
 	@Override
