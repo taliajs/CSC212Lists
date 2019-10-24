@@ -94,43 +94,27 @@ public class GrowableList<T> extends ListADT<T> {
 		for (int i = 0; i < fill; i++) {
 			newArray.setIndex(i, array.getIndex(i));
 		}
-
 		array = newArray; //replace with newArray
-		
 	}
 
 	@Override
 	public void addIndex(int index, T item) {
-		if (fill < array.size()) { 
-			//check if index is valid
-			checkInclusiveIndex(index);
-	
-			//slide over to the right 
-			for (int i = fill; i > index; i--) {
-				this.array.setIndex(i, array.getIndex(i-1));
-			}
-			fill++;
-			
-			//put item at index
-			array.setIndex(index, item);
-			
-		} else {
+		if (fill>= array.size()) {
 			resizeArray();
-			
-			//addIndex
-			//*CHALLENGE: try and move resize array to beginning, 
-			//and only have addIndex loop once
-			checkInclusiveIndex(index);
-			
-			//slide over to the right 
-			for (int i = fill; i > index; i--) {
-				this.array.setIndex(i, array.getIndex(i-1));
-			}
-			fill++;
-			
-			//put item at index
-			array.setIndex(index, item);
 		}
+		
+		//check if index is valid
+		checkInclusiveIndex(index);
+
+		//slide over to the right 
+		for (int i = fill; i > index; i--) {
+			this.array.setIndex(i, array.getIndex(i-1));
+		}
+		fill++;
+		
+		//put item at index
+		array.setIndex(index, item);	
+	
 	}
 
 	@Override
