@@ -29,7 +29,7 @@ public class SinglyLinkedList<T> extends ListADT<T> {
 	@Override
 	public T removeBack() {
 		checkNotEmpty();
-		Node<T> deleted;
+		Node<T> remove;
 		
 		
 		if (size() == 1) {
@@ -44,9 +44,9 @@ public class SinglyLinkedList<T> extends ListADT<T> {
 				lastNode = current;
 				last = lastNode.next;
 			}
-			deleted = last;
+			remove = last;
 			lastNode.next = null;
-			return deleted.value;
+			return remove.value;
 		}	
 	}
 		
@@ -102,16 +102,19 @@ public class SinglyLinkedList<T> extends ListADT<T> {
 		if (index>size() || index<0) {
 			throw new BadIndexError(index);
 		}
+		
+		//add to the front
 		if (index == 0) {
-			//add to front
 			this.start = new Node<T> (item, this.start);
 		}
 		
+		//add to the back
 		if (index == size()) {
 			addBack(item);
 			return;
 		}
 		
+		//add index at a specific location 
 		if (index<size() && index>0) {
 			int count = 0;
 			for (Node <T> current = this.start; current != null; current = current.next) {
@@ -158,6 +161,7 @@ public class SinglyLinkedList<T> extends ListADT<T> {
 	public void setIndex(int index, T value) {
 		checkNotEmpty();
 		
+		//if there is no node
 		if (this.start == null) {
 			this.start = new Node<T> (value, this.start);
 		}
