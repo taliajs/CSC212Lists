@@ -132,15 +132,13 @@ public class DoublyLinkedList<T> extends ListADT<T> {
 		if (index == 0) {
 			addFront(item);
 		}
-
+		
 		// back of the list
 		if (index == size()) {
 			addBack(item);
 			return;
 		}
-
 		// middle of the list
-		// update left and right nodes
 		if (index < size() && index > 0) {
 			int count = 0;
 			for (Node<T> current = this.start; current != null; current = current.after) {
@@ -156,9 +154,7 @@ public class DoublyLinkedList<T> extends ListADT<T> {
 				} // if we found it
 				count++;
 			} // end for
-
 		} // if middle
-
 	}
 
 	@Override
