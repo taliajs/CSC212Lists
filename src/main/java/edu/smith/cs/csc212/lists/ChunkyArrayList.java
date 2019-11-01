@@ -60,14 +60,33 @@ public class ChunkyArrayList<T> extends ListADT<T> {
 
 	@Override
 	public T removeIndex(int index) {
-		throw new TODOErr();
+		// throw new TODOErr();
+		if (this.isEmpty()) {
+			throw new EmptyListError();
+		}
+
+		int start = 0;
+		for (FixedSizeList<T> chunk : this.chunks) {
+			// calculate bounds of this chunk.
+			int end = start + chunk.size();
+
+			if (start <= index && index < end) {
+				return chunk.removeIndex(index);
+			
+
+			}//update bounds of chunk
+			start = end;
+
+		}
+		throw new BadIndexError(index);
+
 	}
 
 	@Override
 	public void addFront(T item) {
-		//PPT 10, slide 10
-		//create chunk if none exists
-		if(chunks.isEmpty()) {
+		// PPT 10, slide 10
+		// create chunk if none exists
+		if (chunks.isEmpty()) {
 			chunks.addBack(makeChunk());
 		}
 		FixedSizeList<T> front = chunks.getFront();
@@ -96,13 +115,13 @@ public class ChunkyArrayList<T> extends ListADT<T> {
 	public void addIndex(int index, T item) {
 		// THIS IS THE HARDEST METHOD IN CHUNKY-ARRAY-LIST.
 		// DO IT LAST.
-		
+
 		int chunkIndex = 0;
 		int start = 0;
 		for (FixedSizeList<T> chunk : this.chunks) {
 			// calculate bounds of this chunk.
 			int end = start + chunk.size();
-			
+
 			// Check whether the index should be in this chunk:
 			if (start <= index && index <= end) {
 				if (chunk.isFull()) {
@@ -112,11 +131,11 @@ public class ChunkyArrayList<T> extends ListADT<T> {
 				} else {
 					// put right in this chunk, there's space.
 					throw new TODOErr();
-				}	
+				}
 				// upon adding, return.
 				// return;
 			}
-			
+
 			// update bounds of next chunk.
 			start = end;
 			chunkIndex++;
@@ -156,7 +175,28 @@ public class ChunkyArrayList<T> extends ListADT<T> {
 
 	@Override
 	public void setIndex(int index, T value) {
-		throw new TODOErr();
+		// throw new TODOErr();
+		if (this.isEmpty()) {
+			throw new EmptyListError();
+		}
+
+		int start = 0;
+		for (FixedSizeList<T> chunk : this.chunks) {
+			// calculate bounds of this chunk.
+			int end = start + chunk.size();
+
+			// go to the specified index, put the new value
+			if (start <= index && index < end) {
+				chunk.setIndex(index - start, value);
+				return;
+				
+			}
+			// update bounds of next chunk.
+			start = end;
+
+		}
+
+		throw new BadIndexError(index);
 	}
 
 	@Override
