@@ -60,20 +60,17 @@ public class ChunkyArrayList<T> extends ListADT<T> {
 
 	@Override
 	public T removeIndex(int index) {
-		// throw new TODOErr();
 		if (this.isEmpty()) {
 			throw new EmptyListError();
 		}
-
 		int start = 0;
 		for (FixedSizeList<T> chunk : this.chunks) {
 			// calculate bounds of this chunk.
 			int end = start + chunk.size();
 
 			if (start <= index && index < end) {
-				return chunk.removeIndex(index);
+				return chunk.removeIndex(index - start);
 			
-
 			}//update bounds of chunk
 			start = end;
 
